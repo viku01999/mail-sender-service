@@ -4,8 +4,9 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "nodemon --exec ts-node dist/server.js",
-    "build": "tsc"
+    "start:dev": "nodemon --exec ts-node src/server.ts",
+    "build": "tsc",
+    "start:prod": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,9 @@
     "@types/express": "^5.0.3",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
-    "nodemon": "^3.1.10"
+    "nodemailer": "^7.0.5",
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.3",
+    "typeorm": "^0.3.25"
   }
 }

@@ -1,4 +1,5 @@
 import express from 'express';
+import { Request, Response } from 'express';
 
 
 
@@ -6,5 +7,11 @@ const app = express();
 const PORT = 3000;
 
 
+app.get('/', (req: Request, res: Response) => {
+    res.status(200).json({
+        success: true,
+        message: 'Service is running on port ' + PORT
+    });
+});
 
 export default app
