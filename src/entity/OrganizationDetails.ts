@@ -9,7 +9,7 @@ import { MailConfiguration } from "./MailConfiguration";
 export class OrganizationDetails {
 
     @PrimaryGeneratedColumn('uuid', { name: 'organization_id' })
-    organization_id!: string;
+    organizationId!: string;
 
     @Column({ name: 'name', type: 'text', nullable: false })
     name!: string;

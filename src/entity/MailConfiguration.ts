@@ -39,4 +39,7 @@ export class MailConfiguration {
     @JoinColumn({ name: 'organization_id' })
     organizationDetails?: OrganizationDetails;
 
+    @Column({ name: 'credential_type', type: 'text' })
+    credentialType!: string;
+
 }
