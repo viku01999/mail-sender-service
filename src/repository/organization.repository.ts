@@ -1,26 +1,5 @@
 import { Repository } from "typeorm";
 import { OrganizationDetails } from "../entity/OrganizationDetails";
+import { PostgresDataSource } from "../config/PostgresDataSource";
 
-
-
-
-export class OrganizationRepository extends Repository<OrganizationDetails> {
-
-    public createOrganization = async (data: OrganizationDetails) => {
-        return await this.save(data);
-    }
-
-
-    public getOrganizationDetails = async () => {
-        return await this.find();
-    }
-
-    public getOrganizationById = async (organizationId: string) => {
-        return await this.findOne({ where: { organizationId } });
-    }
-
-    public deleteOrganization = async (organizationId: string) => {
-        return await this.delete({ organizationId });
-    }
-
-}
+export const OrganizationRepository: Repository<OrganizationDetails> = PostgresDataSource.getRepository(OrganizationDetails);

@@ -42,4 +42,6 @@ export class MailConfiguration {
     @Column({ name: 'credential_type', type: 'text' })
     credentialType!: string;
 
+    @Column({ name: 'number_of_mail_sent', type: 'int', default: 0 })
+    numberOfMailSent!: number;
 }
