@@ -1,9 +1,6 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { MailConfiguration } from "./MailConfiguration";
-
-
-
-
+import { ClientSecretId } from "./ClientIdAndSecret";
 
 @Entity('organization_details')
 export class OrganizationDetails {
@@ -23,7 +20,10 @@ export class OrganizationDetails {
     @Column({ name: 'address', type: 'text', nullable: true })
     address: string | null = null;
 
-    @Column({ name: 'contact', type: 'text', nullable: true })
+    @Column({ name: 'city', type: 'text' })
+    email: string | null = null
+
+    @Column({ name: 'contact', type: 'text' })
     contact: string | null = null;
 
     @Column({ name: 'created_at', type: 'timestamp', nullable: false })
@@ -39,4 +39,10 @@ export class OrganizationDetails {
     @JoinColumn({ name: 'mail_config_id' })
     mailConfigurations!: MailConfiguration[];
 
+    @OneToOne(() => ClientSecretId, clientSecretId => clientSecretId.organizationDetails, {
+        cascade: true,
+        eager: true,
+    })
+    @JoinColumn({ name: 'client_secret_id' })
+    clientSecretId!: ClientSecretId;
 }

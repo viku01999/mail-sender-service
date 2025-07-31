@@ -1,7 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { OrganizationDetails } from "./OrganizationDetails";
-
-
+import { SentEmail } from "./SentEmail";
 
 @Entity('mail_configuration')
 export class MailConfiguration {
@@ -44,4 +43,11 @@ export class MailConfiguration {
 
     @Column({ name: 'number_of_mail_sent', type: 'int', default: 0 })
     numberOfMailSent!: number;
+
+    @Column({ name: 'is_default_mail', type: 'boolean', default: false })
+    isDefaultMail!: boolean;
+
+    // Bi-directional one-to-many relation with SentEmail
+    @OneToMany(() => SentEmail, (sentEmail) => sentEmail.mailConfiguration)
+    sentEmails?: SentEmail[];
 }

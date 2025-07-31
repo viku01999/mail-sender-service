@@ -1,24 +1,33 @@
 import { Request, Response } from 'express';
-import { z } from 'zod';
-import { MailConfigurationService } from '../service/mailConfiguration.service';
+import { AppError } from '../error/AppError';
 import {
-  createMailConfigurationSchema,
-  updateMailConfigurationSchema,
   CreateMailConfigurationInput,
   UpdateMailConfigurationInput,
+  createMailConfigurationSchema,
+  mailConfigIdQuerySchema,
+  updateMailConfigurationSchema,
 } from '../schemas/mailConfiguration.schema';
-import { AppError } from '../error/AppError';
+import { MailConfigurationService } from '../service/mailConfiguration.service';
+
+
 
 const mailConfigurationService = new MailConfigurationService();
 
-// Schema for validating mailConfigId query parameter
-const mailConfigIdQuerySchema = z.object({
-  mailConfigId: z.string().uuid().nonempty(),
-});
 
 export class MailConfigurationController {
-  // Create a new mail configuration
-  async createMailConfiguration(req: Request<{}, {}, CreateMailConfigurationInput>, res: Response): Promise<void> {
+  async createMailConfiguration(req: Request, res: Response): Promise<void> {
+    const clientId = req.header('clientId');
+    const clientSecret = req.header('clientSecret');
+
+    if (!clientId || !clientSecret) {
+      res.status(400).json({
+        success: false,
+        message: 'Client ID and Client Secret are required',
+        data: null,
+      });
+      return;
+    }
+
     const parseResult = createMailConfigurationSchema.safeParse(req.body);
     if (!parseResult.success) {
       res.status(422).json({
@@ -28,8 +37,9 @@ export class MailConfigurationController {
       });
       return;
     }
+
     try {
-      const mailConfig = await mailConfigurationService.createMailConfiguration(parseResult.data);
+      const mailConfig = await mailConfigurationService.createMailConfiguration(parseResult.data, clientId, clientSecret);
       res.status(201).json({
         success: true,
         message: 'Mail Configuration created successfully',
@@ -44,7 +54,46 @@ export class MailConfigurationController {
     }
   }
 
-  // Get all mail configurations
+  async makeDefaultMailConfiguration(req: Request, res: Response): Promise<void> {
+    const clientId = req.header('clientId');
+    const clientSecret = req.header('clientSecret');
+    const { mailConfigId } = req.body;
+
+    if (!clientId || !clientSecret) {
+      res.status(400).json({
+        success: false,
+        message: 'Client ID and Client Secret are required',
+        data: null,
+      });
+      return;
+    }
+
+    if (!mailConfigId) {
+      res.status(400).json({
+        success: false,
+        message: 'Mail Configuration ID is required',
+        data: null,
+      });
+      return;
+    }
+
+    try {
+      const updatedMailConfig = await mailConfigurationService.makeDefaultMailConfiguration(mailConfigId, clientId, clientSecret);
+      res.status(200).json({
+        success: true,
+        message: 'Mail Configuration set as default successfully',
+        data: updatedMailConfig,
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+        data: null,
+      });
+    }
+  }
+
+
   async getMailConfigurations(req: Request, res: Response): Promise<void> {
     try {
       const mailConfigs = await mailConfigurationService.getMailConfigurations();
@@ -60,7 +109,7 @@ export class MailConfigurationController {
     }
   }
 
-  // Get mail configuration by ID from query parameters
+
   async getMailConfigurationById(req: Request<{}, {}, {}, { mailConfigId: string }>, res: Response): Promise<void> {
     try {
       const queryValidation = mailConfigIdQuerySchema.safeParse(req.query);
@@ -93,7 +142,7 @@ export class MailConfigurationController {
     }
   }
 
-  // Update mail configuration by ID from query parameters
+
   async updateMailConfiguration(req: Request<{}, {}, UpdateMailConfigurationInput, { mailConfigId: string }>, res: Response): Promise<void> {
     const parseResult = updateMailConfigurationSchema.safeParse(req.body);
     if (!parseResult.success) {
@@ -138,7 +187,7 @@ export class MailConfigurationController {
     }
   }
 
-  // Delete mail configuration by ID from query parameters
+
   async deleteMailConfiguration(req: Request<{}, {}, {}, { mailConfigId: string }>, res: Response): Promise<void> {
     try {
       const queryValidation = mailConfigIdQuerySchema.safeParse(req.query);
@@ -161,7 +210,7 @@ export class MailConfigurationController {
     }
   }
 
-  // Increment number of mails sent by ID from query parameters
+
   async incrementNumberOfMailSent(req: Request<{}, {}, { incrementBy?: number }, { mailConfigId: string }>, res: Response): Promise<void> {
     try {
       const queryValidation = mailConfigIdQuerySchema.safeParse(req.query);

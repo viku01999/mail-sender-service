@@ -1,18 +1,13 @@
 import { Request, Response } from 'express';
-import { z } from 'zod';
 import { AppError } from '../error/AppError';
-import { CreateOrganizationInput, createOrganizationSchema, UpdateOrganizationInput, updateOrganizationSchema } from '../schemas/organization.schema';
+import { CreateOrganizationInput, createOrganizationSchema, organizationIdQuerySchema, UpdateOrganizationInput, updateOrganizationSchema } from '../schemas/organization.schema';
 import { OrganizationService } from '../service/organization.service';
+
 
 const organizationService = new OrganizationService();
 
-// Schema for validating query parameters
-const organizationIdQuerySchema = z.object({
-  organizationId: z.string().uuid().nonempty(),
-});
 
 export class OrganizationController {
-  // Create a new organization
   async createOrganization(req: Request<{}, {}, CreateOrganizationInput>, res: Response): Promise<void> {
     const parseResult = createOrganizationSchema.safeParse(req.body);
     if (!parseResult.success) {
@@ -27,7 +22,7 @@ export class OrganizationController {
       const organization = await organizationService.createOrganization(parseResult.data);
       res.status(201).json({
         success: true,
-        message: 'Organization created successfully',
+        message: "Organization created successfully. Dont't share your client id and secret with anyone.",
         data: organization,
       });
     } catch (error: any) {
@@ -39,7 +34,6 @@ export class OrganizationController {
     }
   }
 
-  // Get all organization details
   async getOrganizationDetails(req: Request, res: Response): Promise<void> {
     try {
       const organizations = await organizationService.getOrganizationDetails();
@@ -55,7 +49,6 @@ export class OrganizationController {
     }
   }
 
-  // Get organization by ID from query parameters
   async getOrganizationById(req: Request<{}, {}, {}, { organizationId: string }>, res: Response): Promise<void> {
     try {
       const queryValidation = organizationIdQuerySchema.safeParse(req.query);
@@ -88,7 +81,6 @@ export class OrganizationController {
     }
   }
 
-  // Update organization by ID from query parameters
   async updateOrganization(req: Request<{}, {}, UpdateOrganizationInput, { organizationId: string }>, res: Response): Promise<void> {
     const parseResult = updateOrganizationSchema.safeParse(req.body);
     if (!parseResult.success) {
@@ -133,7 +125,6 @@ export class OrganizationController {
     }
   }
 
-  // Delete organization by ID from query parameters
   async deleteOrganization(req: Request<{}, {}, {}, { organizationId: string }>, res: Response): Promise<void> {
     try {
       const queryValidation = organizationIdQuerySchema.safeParse(req.query);
