@@ -1,0 +1,64 @@
+{
+  "info": {
+    "name": "Mail Sender API - Form Data Request",
+    "description": "Postman collection for sending emails with image attachments and form data",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Send Email with Image Attachment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "clientId",
+            "value": "your-client-id",
+            "type": "text"
+          },
+          {
+            "key": "clientSecret",
+            "value": "your-client-secret",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/api/v1/mail-sender/send-email?toMail=recipient@example.com",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "v1", "mail-sender", "send-email"],
+          "query": [
+            {
+              "key": "toMail",
+              "value": "recipient@example.com"
+            }
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "subject",
+              "value": "Test Email with Image Attachment",
+              "type": "text"
+            },
+            {
+              "key": "text",
+              "value": "This is a test email with image attachment sent via Postman.",
+              "type": "text"
+            },
+            {
+              "key": "html",
+              "value": "<html><body><h1>Test Email</h1><p>This is a test email with image attachment.</p></body></html>",
+              "type": "text"
+            },
+            {
+              "key": "attachments",
+              "type": "file",
+              "src": "/path/to/your/image.jpg"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

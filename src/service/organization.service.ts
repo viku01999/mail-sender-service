@@ -33,14 +33,7 @@ export class OrganizationService {
     const savedClientSecretId = await this.clientSecretIdRepository.save(clientSecretIdEntity);
 
 
-    return {
-      organization: savedOrganization,
-      clientCredentials: {
-        clientSecretId: savedClientSecretId.clientSecretId,
-        clientId: savedClientSecretId.clientId,
-        clientSecret: savedClientSecretId.clientSecret,
-      },
-    };
+    return savedClientSecretId;
   }
 
   async getOrganizationDetails(): Promise<OrganizationDetails[]> {

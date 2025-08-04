@@ -14,20 +14,17 @@ export class MailSenderService {
   }
 
   async sendEmailWithClientCredentials(clientId: string, clientSecret: string, to: string, subject?: string, text?: string, html?: string, attachments?: any[]) {
-    // Find organization by client credentials
     const organization = await this.organizationService.getOrganizationByClientCredentials(clientId, clientSecret);
     if (!organization) {
       throw new Error('Organization not found for the given client credentials');
     }
 
-    // Get all mail configurations by organization
     let mailConfigs = await this.mailConfigurationService.getMailConfigurationsByOrganization(organization);
 
     if (!mailConfigs || mailConfigs.length === 0) {
       throw new Error('No mail configurations found for the organization');
     }
 
-    // Sort mailConfigs to have default mail config first
     mailConfigs = mailConfigs.sort((a, b) => (b.isDefaultMail ? 1 : 0) - (a.isDefaultMail ? 1 : 0));
 
     const results: { credential: string; success: boolean; error?: string }[] = [];
@@ -65,11 +62,9 @@ export class MailSenderService {
           await sendMailSMTP587({ host, user: username, pass: password }, mailOptions);
         }
         results.push({ credential: username, success: true });
-        // If mail sent successfully, return success immediately
         return { success: true, message: `Email sent successfully using credential: ${username}`, details: results };
       } catch (error: any) {
         results.push({ credential: username, success: false, error: error.message || 'Failed to send email' });
-        // Continue to next credential
       }
     }
 

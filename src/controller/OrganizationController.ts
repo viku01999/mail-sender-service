@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { AppError } from '../error/AppError';
-import { CreateOrganizationInput, createOrganizationSchema, organizationIdQuerySchema, UpdateOrganizationInput, updateOrganizationSchema } from '../schemas/organization.schema';
+import { createOrganizationSchema, ICreateOrganizationInput, organizationIdQuerySchema, UpdateOrganizationInput, updateOrganizationSchema } from '../schemas/organization.schema';
 import { OrganizationService } from '../service/organization.service';
 
 
@@ -8,7 +8,7 @@ const organizationService = new OrganizationService();
 
 
 export class OrganizationController {
-  async createOrganization(req: Request<{}, {}, CreateOrganizationInput>, res: Response): Promise<void> {
+  async createOrganization(req: Request<{}, {}, ICreateOrganizationInput>, res: Response): Promise<void> {
     const parseResult = createOrganizationSchema.safeParse(req.body);
     if (!parseResult.success) {
       res.status(422).json({

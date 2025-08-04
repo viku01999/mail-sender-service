@@ -148,21 +148,3 @@ Request Body:
   None
 '
 
-: '
-Endpoint: Send Email
-Method: POST
-URL: /send-email
-Headers:
-  clientId: {{clientId}}
-  clientSecret: {{clientSecret}}
-  mailCredentialsTypes: {{mailCredentialsTypes}}
-  Content-Type: application/json
-Request Body:
-{
-  "toMail": "recipient@example.com",
-  "subject": "Test Email",
-  "text": "This is a test email.",
-  "html": "<p>This is a test email.</p>",
-  "attachments": []
-}
-'

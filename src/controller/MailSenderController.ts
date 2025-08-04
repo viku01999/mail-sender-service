@@ -12,17 +12,16 @@ export class MailSenderController {
   async sendEmailWithHeaders(req: Request, res: Response): Promise<void> {
     const clientId = req.header('clientId') || '';
     const clientSecret = req.header('clientSecret') || '';
-    const mailCredentialsTypes = req.header('mailCredentialsTypes');
 
-    // Extract toMail from query parameters
+    if (!clientId || !clientSecret) {
+      throw new NotFoundError('Client ID and Client Secret are required');
+    }
+
     const toMail = req.query.toMail as string | undefined;
 
-    // Extract other fields from body and files
     const { subject, text, html } = req.body;
-    // @ts-ignore
     const files = req.files;
 
-    // Convert attachments to expected format if present
     let attachments;
     if (files && Array.isArray(files) && files.length > 0) {
       attachments = files.map((file: any) => ({

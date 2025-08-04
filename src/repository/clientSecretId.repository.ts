@@ -1,5 +1,7 @@
 import { Repository } from "typeorm";
-import { ClientSecretId } from "../entity/ClientIdAndSecret";
 import { PostgresDataSource } from "../config/PostgresDataSource";
+import { ClientSecret } from "../entity/ClientIdAndSecret";
 
-export const ClientSecretIdRepository: Repository<ClientSecretId> = PostgresDataSource.getRepository(ClientSecretId);
+
+
+export const ClientSecretIdRepository: Repository<ClientSecret> = PostgresDataSource.getRepository(ClientSecret);

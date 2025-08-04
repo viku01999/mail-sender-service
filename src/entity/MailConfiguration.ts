@@ -47,7 +47,6 @@ export class MailConfiguration {
     @Column({ name: 'is_default_mail', type: 'boolean', default: false })
     isDefaultMail!: boolean;
 
-    // Bi-directional one-to-many relation with SentEmail
     @OneToMany(() => SentEmail, (sentEmail) => sentEmail.mailConfiguration)
     sentEmails?: SentEmail[];
 }

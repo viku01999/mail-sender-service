@@ -14,7 +14,7 @@ export const createMailConfigurationSchema = z.object({
 
 export const updateMailConfigurationSchema = createMailConfigurationSchema.partial();
 
-export type CreateMailConfigurationInput = z.infer<typeof createMailConfigurationSchema>;
+export type ICreateMailConfigurationInput = z.infer<typeof createMailConfigurationSchema>;
 export type UpdateMailConfigurationInput = z.infer<typeof updateMailConfigurationSchema>;
 
 

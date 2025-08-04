@@ -5,8 +5,8 @@ import { OrganizationDetails } from "./OrganizationDetails";
 
 
 
-@Entity('client_secret_id')
-export class ClientSecretId {
+@Entity('client_secret')
+export class ClientSecret {
 
     @PrimaryGeneratedColumn('uuid', { name: 'client_secret_id' })
     clientSecretId!: string;

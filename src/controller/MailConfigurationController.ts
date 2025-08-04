@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import { AppError } from '../error/AppError';
 import {
-  CreateMailConfigurationInput,
+  ICreateMailConfigurationInput,
   UpdateMailConfigurationInput,
   createMailConfigurationSchema,
   mailConfigIdQuerySchema,
-  updateMailConfigurationSchema,
+  updateMailConfigurationSchema
 } from '../schemas/mailConfiguration.schema';
 import { MailConfigurationService } from '../service/mailConfiguration.service';
 
@@ -15,7 +15,7 @@ const mailConfigurationService = new MailConfigurationService();
 
 
 export class MailConfigurationController {
-  async createMailConfiguration(req: Request, res: Response): Promise<void> {
+  async createMailConfiguration(req: Request<{}, {}, ICreateMailConfigurationInput>, res: Response): Promise<void> {
     const clientId = req.header('clientId');
     const clientSecret = req.header('clientSecret');
 
@@ -53,6 +53,7 @@ export class MailConfigurationController {
       });
     }
   }
+  
 
   async makeDefaultMailConfiguration(req: Request, res: Response): Promise<void> {
     const clientId = req.header('clientId');
