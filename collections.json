@@ -1,0 +1,298 @@
+{
+    "info": {
+        "name": "Organization and Mail Config API",
+        "_postman_id": "unique-id",
+        "description": "A collection of API endpoints for organization and mail configurations.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Create Organization",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"name\": \"Example Organization\",\"domain\": \"example.com\",\"logo\": \"\",\"address\": \"123 Example St\",\"city\": \"Example City\",\"email\": \"contact@example.com\",\"contact\": \"1234567890\"}"
+                },
+                "url": {
+                    "raw": "/create-organizations",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "create-organizations"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Get All Organizations",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "/organizations",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "organizations"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Get Organization By Id",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "/organizations/id?organizationId={{organizationId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "organizations",
+                        "id"
+                    ],
+                    "query": [
+                        {
+                            "key": "organizationId",
+                            "value": "{{organizationId}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Update Organization",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"name\": \"Updated Organization Name\",\"domain\": \"updated.com\"}"
+                },
+                "url": {
+                    "raw": "/organizations?organizationId={{organizationId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "organizations"
+                    ],
+                    "query": [
+                        {
+                            "key": "organizationId",
+                            "value": "{{organizationId}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Delete Organization",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "/organizations?organizationId={{organizationId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "organizations"
+                    ],
+                    "query": [
+                        {
+                            "key": "organizationId",
+                            "value": "{{organizationId}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Create Mail Configuration",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "clientId",
+                        "value": "{{clientId}}"
+                    },
+                    {
+                        "key": "clientSecret",
+                        "value": "{{clientSecret}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"host\": \"smtp.example.com\",\"port\": 587,\"isSecured\": true,\"username\": \"user@example.com\",\"password\": \"password123\",\"credentialType\": \"SMTP\",\"extraCredentials\": null,\"isDefaultMail\": true}"
+                },
+                "url": {
+                    "raw": "/mail-configurations",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "mail-configurations"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Get All Mail Configurations",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "/mail-configurations",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "mail-configurations"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Get Mail Configuration By Id",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "/mail-configurations/id?mailConfigId={{mailConfigId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "mail-configurations",
+                        "id"
+                    ],
+                    "query": [
+                        {
+                            "key": "mailConfigId",
+                            "value": "{{mailConfigId}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Update Mail Configuration",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "clientId",
+                        "value": "{{clientId}}"
+                    },
+                    {
+                        "key": "clientSecret",
+                        "value": "{{clientSecret}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"host\": \"smtp.updated.com\",\"port\": 465,\"isSecured\": true,\"username\": \"updateduser@example.com\",\"password\": \"newpassword\",\"credentialType\": \"SMTP\",\"extraCredentials\": null,\"isDefaultMail\": false}"
+                },
+                "url": {
+                    "raw": "/mail-configurations?mailConfigId={{mailConfigId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "mail-configurations"
+                    ],
+                    "query": [
+                        {
+                            "key": "mailConfigId",
+                            "value": "{{mailConfigId}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Make Default Mail Configuration",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "clientId",
+                        "value": "{{clientId}}"
+                    },
+                    {
+                        "key": "clientSecret",
+                        "value": "{{clientSecret}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"mailConfigId\": \"{{mailConfigId}}\"}"
+                },
+                "url": {
+                    "raw": "/mail-configurations/make-default",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "mail-configurations",
+                        "make-default"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Delete Mail Configuration",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "clientId",
+                        "value": "{{clientId}}"
+                    },
+                    {
+                        "key": "clientSecret",
+                        "value": "{{clientSecret}}"
+                    }
+                ],
+                "url": {
+                    "raw": "/mail-configurations?mailConfigId={{mailConfigId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "mail-configurations"
+                    ],
+                    "query": [
+                        {
+                            "key": "mailConfigId",
+                            "value": "{{mailConfigId}}"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
