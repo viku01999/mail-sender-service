@@ -42,7 +42,7 @@ export async function connectConsumer() {
             clientSecret,
             email || '',
             "Enquiry Received Acknowledgement",
-            "Thank you for reaching out to use our team will contact you soon.",
+            "Thank you for contacting Sudosys! We will get in touch with you soon.",
             html,
             attachments
           );
