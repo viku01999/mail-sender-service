@@ -20,6 +20,9 @@ export class MailConfiguration {
     @Column({ name: 'username', type: 'text', nullable: false })
     username!: string;
 
+    @Column({ name: 'from', type: 'text', nullable: false })
+    from!: string;
+
     @Column({ name: 'password', type: 'text', nullable: false })
     password!: string;
 

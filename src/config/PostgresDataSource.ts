@@ -9,7 +9,7 @@ export const PostgresDataSource = new DataSource({
     port: 5432,
     username: "postgres",
     password: "postgres",
-    database: "postgres",
+    database: "notification",
     entities: ["src/entity/*.ts"],
     migrations: ["src/migration/*.ts"],
     synchronize: true,

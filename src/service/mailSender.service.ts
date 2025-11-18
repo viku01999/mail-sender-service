@@ -30,10 +30,10 @@ export class MailSenderService {
     const results: { credential: string; success: boolean; error?: string }[] = [];
 
     for (const mailConfig of mailConfigs) {
-      const { host, port, username, password, credentialType, extraCredentials } = mailConfig;
+      const { host, port, username, from,  password, credentialType, extraCredentials } = mailConfig;
 
       const mailOptions = {
-        from: username,
+        from: from,
         to,
         subject: subject || '',
         text: text || '',

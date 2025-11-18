@@ -1,0 +1,53 @@
+curl -X POST http://localhost:7011/api/v1/organization/create-organizations \
+-H "Content-Type: application/json" \
+-d '{
+"name": "SudoSys",
+"domain": "sudosys.org",
+"logo": "",
+"address": "h1",
+"city": "Noida",
+"email": "hello@sudosys.org",
+"contact": "8756523281"
+}'
+
+{"clientId":"f0ebdca234d4e489f431d9a6e31149f7","clientSecret":"849c1b49e49de7d1ff7d94c72df0f2c630dc79cfc9492ef0e42fad1c981f2e3e","organizationDetails":{"address":"h1","email":"hello@sudosys.org","contact":"8756523281","organizationId":"83b483e2-bfcc-4c37-9e69-e24a4411362d","name":"SudoSys","domain":"sudosys.org","logo":"","createdAt":"2025-11-18T16:38:44.131Z","updatedAt":"2025-11-18T16:38:44.131Z"},"clientSecretId":"ce2782b3-3aa9-4107-8370-9f266d17152b"}}
+{"success":true,"message":"Organization created successfully. Dont't share your client id and secret with anyone.","data":{"clientId":"04ff3260bcbdcd020867bae8c7014bf1","clientSecret":"3bfdc98bc72497d3dc9d2568a813d4c192af8bc8472f680f435427d752e0e393","organizationDetails":{"address":"h1","email":"hello@sudosys.org","contact":"8756523281","organizationId":"5742f9c7-8cb7-4638-8d5b-e31293df1e53","name":"SudoSys","domain":"sudosys.org","logo":"","createdAt":"2025-11-18T18:21:27.209Z","updatedAt":"2025-11-18T18:21:27.209Z"},"clientSecretId":"2adc4946-d64e-4560-97d9-8bab80522be6"}}
+
+
+http POST http://localhost:3000/api/v1/config/mail-configurations \
+Content-Type:application/json \
+clientId:04ff3260bcbdcd020867bae8c7014bf1 \
+clientSecret:3bfdc98bc72497d3dc9d2568a813d4c192af8bc8472f680f435427d752e0e393 \
+host="smtp.hostinger.com" \
+port:=465 \
+isSecured:=true \
+username="ankit@sudosys.org" \
+from="noreply@sudosys.org"
+password="S+1cAjrY#;oz" \
+credentialType="SMTP" \
+extraCredentials:=null \
+isDefaultMail:=true
+
+
+S+1cAjrY#;oz
+Incoming server (IMAP)
+
+imap.hostinger.com 
+
+993
+
+
+Outgoing server (SMTP)
+
+smtp.hostinger.com 
+
+465
+
+
+Incoming server (POP)
+
+pop.hostinger.com 
+
+995
+ankit@sudosys.org
+no-reply-goodcredit@sudosys.org

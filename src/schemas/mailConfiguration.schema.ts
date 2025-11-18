@@ -6,6 +6,7 @@ export const createMailConfigurationSchema = z.object({
   port: z.number().int().positive(),
   isSecured: z.boolean(),
   username: z.string().min(1),
+  from: z.string().min(1),
   password: z.string().min(1),
   extraCredentials: z.record(z.string(), z.any()).optional().nullable(),
   credentialType: z.enum([mailCredentialsTypes.OAUTH2, mailCredentialsTypes.SMTP]),
