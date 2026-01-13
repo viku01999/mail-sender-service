@@ -6,8 +6,9 @@ import { PostgresDataSource } from "./config/PostgresDataSource";
 
 const initializeDatabase = async () => {
     try {
+        console.log("Initializing database...")
         await PostgresDataSource.initialize();
-        console.log("Database connected");
+        console.log("Database connected...");
     } catch (error: any) {
         console.error("Error connecting to database:", error);
         process.exit(1);

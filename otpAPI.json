@@ -1,0 +1,24 @@
+//Make post req to send an OTP
+http://localhost:3000/api/v1/verification-process/sendOTP?email=example.com&method=email
+
+Params:-
+email
+method
+
+or
+
+phone
+method
+
+
+
+// TO verify OTP
+http://localhost:3000/api/v1/verification-process/verifyOTP?otp=777124&receiver=vikas.kumar@suhora.com
+
+Params:-
+otp
+receiver
+
+
+Both need to require x-api-key so first set in env
+

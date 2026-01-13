@@ -20,6 +20,7 @@ export class OrganizationService {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+    
     const savedOrganization = await this.organizationRepository.save(dataToBeSave);
 
     const { clientId, clientSecret } = generateClientCredentials();
