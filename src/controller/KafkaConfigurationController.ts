@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { NotFoundError } from '../error/NotFoundError';
 import { KafkaConfigurationService } from '../service/kafkaConfiguration.service';
 import { ICreateKafkaConfigurationInput } from '../schemas/kafkaConfiguration.schema';
@@ -6,7 +6,7 @@ import { ICreateKafkaConfigurationInput } from '../schemas/kafkaConfiguration.sc
 const kafkaConfigurationService = new KafkaConfigurationService();
 
 export class KafkaConfigurationController {
-  async createKafkaConfiguration(req: Request<{}, {}, ICreateKafkaConfigurationInput>, res: Response): Promise<void> {
+  async createKafkaConfiguration(req: Request<{}, {}, ICreateKafkaConfigurationInput>, res: Response, next: NextFunction): Promise<void> {
     const clientId = req.header('clientId');
     const clientSecret = req.header('clientSecret');
 
@@ -27,15 +27,12 @@ export class KafkaConfigurationController {
         data: kafkaConfig,
       });
     } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        data: null,
-      });
+      console.error(`[CONTROLLER ERROR] Error in createKafkaConfiguration:`, error);
+      next(error);
     }
   }
 
-  async getKafkaConfigurations(req: Request, res: Response): Promise<void> {
+  async getKafkaConfigurations(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const kafkaConfigs = await kafkaConfigurationService.getKafkaConfigurations();
       res.status(200).json({
@@ -43,16 +40,17 @@ export class KafkaConfigurationController {
         data: kafkaConfigs,
       });
     } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
+      console.error(`[CONTROLLER ERROR] Error in getKafkaConfigurations:`, error);
+      next(error);
     }
   }
 
-  async getKafkaConfigurationById(req: Request, res: Response): Promise<void> {
+  async getKafkaConfigurationById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { kafkaConfigId } = req.params;
+      const kafkaConfigId = Array.isArray(req.params.kafkaConfigId)
+        ? req.params.kafkaConfigId[0]
+        : req.params.kafkaConfigId;
+
       const kafkaConfig = await kafkaConfigurationService.getKafkaConfigurationById(kafkaConfigId);
       if (!kafkaConfig) {
         res.status(404).json({
@@ -66,16 +64,17 @@ export class KafkaConfigurationController {
         data: kafkaConfig,
       });
     } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
+      console.error(`[CONTROLLER ERROR] Error in getKafkaConfigurationById:`, error);
+      next(error);
     }
   }
 
-  async updateKafkaConfiguration(req: Request, res: Response): Promise<void> {
+  async updateKafkaConfiguration(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { kafkaConfigId } = req.params;
+      const kafkaConfigId = Array.isArray(req.params.kafkaConfigId)
+        ? req.params.kafkaConfigId[0]
+        : req.params.kafkaConfigId;
+
       const kafkaConfig = await kafkaConfigurationService.updateKafkaConfiguration(kafkaConfigId, req.body);
       if (!kafkaConfig) {
         res.status(404).json({
@@ -90,23 +89,22 @@ export class KafkaConfigurationController {
         data: kafkaConfig,
       });
     } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
+      console.error(`[CONTROLLER ERROR] Error in updateKafkaConfiguration:`, error);
+      next(error);
     }
   }
 
-  async deleteKafkaConfiguration(req: Request, res: Response): Promise<void> {
+  async deleteKafkaConfiguration(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { kafkaConfigId } = req.params;
+      const kafkaConfigId = Array.isArray(req.params.kafkaConfigId)
+        ? req.params.kafkaConfigId[0]
+        : req.params.kafkaConfigId;
+
       await kafkaConfigurationService.deleteKafkaConfiguration(kafkaConfigId);
       res.status(204).send();
     } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
+      console.error(`[CONTROLLER ERROR] Error in deleteKafkaConfiguration:`, error);
+      next(error);
     }
   }
 }

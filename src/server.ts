@@ -20,3 +20,15 @@ app.listen(3000, () => {
     initializeDatabase();
     console.log("Server running on port 3000");
 });
+
+// Process-level error logging
+process.on('uncaughtException', (error) => {
+    console.error('CRITICAL: Uncaught Exception detected!');
+    console.error(error);
+    // In production, you might want to perform a graceful shutdown here
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('CRITICAL: Unhandled Rejection at:', promise);
+    console.error('Reason:', reason);
+});

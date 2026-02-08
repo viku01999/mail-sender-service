@@ -47,6 +47,15 @@ export class VerificationService {
     }
 
     private async sendOtpViaEmail(email: string, otp: string): Promise<void> {
+        console.log(`[SMTP DIAGNOSTIC]`);
+        console.log(`- Host: ${process.env.EMAIL_HOST}`);
+        console.log(`- Port: ${process.env.EMAIL_PORT}`);
+        console.log(`- Secure: ${process.env.EMAIL_SECURE}`);
+        console.log(`- User: ${process.env.EMAIL_USER}`);
+        console.log(`- Pass Length: ${process.env.EMAIL_PASS?.length || 0}`);
+        if (process.env.EMAIL_PASS) {
+            console.log(`- Pass Start: ${process.env.EMAIL_PASS.substring(0, 1)}... End: ${process.env.EMAIL_PASS.slice(-1)}`);
+        }
 
         const transporter = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,
@@ -57,13 +66,17 @@ export class VerificationService {
                 pass: process.env.EMAIL_PASS
             }
         });
+        try {
+            await transporter.sendMail({
+                from: `"SudoSys OTP" <${process.env.EMAIL_FROM}>`,
+                to: email,
+                subject: 'Your OTP Code',
+                text: `Your OTP code is ${otp}. It is valid for 10 minutes.`
+            });
+        } catch (error) {
+            console.error("Error sending email:", error);
+        }
 
-        await transporter.sendMail({
-            from: `"OTP Service" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: 'Your OTP Code',
-            text: `Your OTP code is ${otp}. It is valid for 10 minutes.`
-        });
 
         console.log(`OTP ${otp} sent to email ${email}`);
     }

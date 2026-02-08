@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { NotFoundError } from '../error/NotFoundError';
 import { MailSenderService } from '../service/mailSender.service';
 
@@ -9,7 +9,7 @@ export class MailSenderController {
     this.mailSenderService = new MailSenderService();
   }
 
-  async sendEmailWithHeaders(req: Request, res: Response): Promise<void> {
+  async sendEmailWithHeaders(req: Request, res: Response, next: NextFunction): Promise<void> {
     const clientId = req.header('clientId') || '';
     const clientSecret = req.header('clientSecret') || '';
 
@@ -36,7 +36,8 @@ export class MailSenderController {
       await this.mailSenderService.sendEmailWithClientCredentials(clientId, clientSecret, toMail || '', subject, text, html, attachments);
       res.status(200).json({ success: true, message: 'Email sent successfully' });
     } catch (error: any) {
-      res.status(500).json({ success: false, message: error.message || 'Failed to send email' });
+      console.error(`[CONTROLLER ERROR] Error in sendEmailWithHeaders:`, error);
+      next(error);
     }
   }
 }

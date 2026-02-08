@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { VerificationService } from "../service/verificationProcess.service";
 import { AppError } from "../error/AppError";
 
@@ -7,7 +7,7 @@ const verificationService = new VerificationService();
 
 export class VerificationOTPController {
 
-    async sentOTPToRequestedLocation(req: Request<{}, {}, {}, { email?: string, phone?: string, method: string }>, res: Response): Promise<void> {
+    async sentOTPToRequestedLocation(req: Request<{}, {}, {}, { email?: string, phone?: string, method: string }>, res: Response, next: NextFunction): Promise<void> {
         const email = req.query.email;
         const phone = req.query.phone;
         const method = req.query.method;
@@ -64,26 +64,15 @@ export class VerificationOTPController {
             await verificationService.sentOtpToUserViaRequestedMethod(method, receiverId);
             res.status(201).json({
                 success: true,
-                message: "OTP sent successfully.",
+                message: "SudoSys OTP sent successfully.",
             });
         } catch (error: any) {
-            if (error instanceof AppError) {
-                res.status(error.statusCode).json({
-                    success: false,
-                    message: error.message,
-                    data: null,
-                });
-            } else {
-                res.status(500).json({
-                    success: false,
-                    message: 'Internal server error',
-                    data: null,
-                });
-            }
+            console.error(`[CONTROLLER ERROR] Error in sentOTPToRequestedLocation:`, error);
+            next(error);
         }
     }
 
-    async checkOTPValidOrNot(req: Request<{}, {}, {}, { otp: string, receiver: string }>, res: Response): Promise<void> {
+    async checkOTPValidOrNot(req: Request<{}, {}, {}, { otp: string, receiver: string }>, res: Response, next: NextFunction): Promise<void> {
         const receiver = req.query.receiver
         const otp = req.query.otp
 
@@ -102,19 +91,8 @@ export class VerificationOTPController {
                 message: "OTP is verified.",
             });
         } catch (error: any) {
-            if (error instanceof AppError) {
-                res.status(error.statusCode).json({
-                    success: false,
-                    message: error.message,
-                    data: null,
-                });
-            } else {
-                res.status(500).json({
-                    success: false,
-                    message: 'Internal server error',
-                    data: null,
-                });
-            }
+            console.error(`[CONTROLLER ERROR] Error in checkOTPValidOrNot:`, error);
+            next(error);
         }
     }
 }
